@@ -125,7 +125,7 @@ INITIALIZE_PLUGIN() {
             DEBUG_FUNCTION_LINE("Backed up vino_config.txt!");
             StartNotificationThread("Backed up vino_config.txt!");
         } else {
-            return true;
+            return;
         }
         if (ranAlready2() == false) {
             FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_PATCH_PATH);
