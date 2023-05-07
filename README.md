@@ -2,7 +2,7 @@
 This currently does not work. Will be fixed soon™️ :)
 
 # vino-config-patcher-plugin
-A Wii U Aroma plugin that patches your vino_config.txt to use LatteU's TVii revival service.
+A Wii U Aroma plugin that patches the vino_config.txt with a custom on from the root of your SD card.
 
 Get it here: <a href="https://cdn.ecliipse.app/vino-config-patcher.wps">click mii!</a>
 
