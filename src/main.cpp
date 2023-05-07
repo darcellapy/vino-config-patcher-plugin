@@ -77,22 +77,21 @@ INITIALIZE_PLUGIN() {
     WHBLogCafeInit();
     Config::Init();
     if (Mocha_InitLibrary() != MOCHA_RESULT_SUCCESS) {
-        DEBUG_FUNCTION_LINE("Fatal error, Mocha_InitLibrary failed :(");
-        return;
+        OSFATAL_FUNCTION_LINE("Fatal error, Mocha_InitLibrary failed :(");
     }
     FSAInit();
     gClient = FSAAddClient(NULL);
     if (gClient == 0) {
-        DEBUG_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
+        OSFATAL_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
         return;
     }
     if (Mocha_UnlockFSClientEx(gClient) != MOCHA_RESULT_SUCCESS) {
         FSADelClient(gClient);
-        DEBUG_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
+        OSFATAL_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
         return;
     }
     if (NotificationModule_InitLibrary() != NOTIFICATION_MODULE_RESULT_SUCCESS) {
-        DEBUG_FUNCTION_LINE("NotificationModule_InitLibrary failed");
+        OSFATAL_FUNCTION_LINE("NotificationModule_InitLibrary failed :(");
     }
     if (Config::connect_to_latte) {	
 	// check if original Vino config was backed up
@@ -158,7 +157,6 @@ ON_APPLICATION_ENDS() {
     FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_PATCH_PATH);
     FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_BACKUP_PATH);
     DEBUG_FUNCTION_LINE("Restored original vino_config.txt!");
-    FSACloseFile(gClient, NULL);
     DEBUG_FUNCTION_LINE("VCI: shutting down...\n");
     StopNotificationThread();
     DEBUG_FUNCTION_LINE("Unmount storage_mlc");
