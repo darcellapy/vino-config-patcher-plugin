@@ -13,9 +13,6 @@
 #include <mocha/mocha.h>
 #include <stdio.h>
 #include <string>
-#include <cstring>
-#include <fstream>
-#include <iostream>
 #include <filesystem>
 #include <notifications/notifications.h>
 #include <utils/logger.h>
@@ -84,17 +81,19 @@ bool ranAlready2() {
 INITIALIZE_PLUGIN() {
     WHBLogUdpInit();
     WHBLogCafeInit();
+    Config::Init();
     Mocha_InitLibrary();
     FSAInit();
     gClient = FSAAddClient(NULL);
     if (gClient == 0) {
         DEBUG_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
+        return 0;
     }
     if (Mocha_UnlockFSClientEx(gClient) != MOCHA_RESULT_SUCCESS) {
         FSADelClient(gClient);
         DEBUG_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
+        return 0;
     }
-    Config::Init();
 
     if (NotificationModule_InitLibrary() != NOTIFICATION_MODULE_RESULT_SUCCESS) {
         DEBUG_FUNCTION_LINE("NotificationModule_InitLibrary failed");
