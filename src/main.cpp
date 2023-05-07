@@ -2,18 +2,15 @@
 // Note: used some of Inkay, the Pretendo Network plugin source code as a base and to make use of the notfications. Credit to Pretendo for developing Inkay
 
 #include <wups.h>
+#include <stdio.h>
+#include <string>
+#include <filesystem>
 #include <optional>
 #include <coreinit/filesystem_fsa.h>
 #include <coreinit/cache.h>
 #include <coreinit/ios.h>
 #include <coreinit/mcp.h>
-#include <coreinit/screen.h>
-#include <coreinit/thread.h>
-#include <coreinit/time.h>
 #include <mocha/mocha.h>
-#include <stdio.h>
-#include <string>
-#include <filesystem>
 #include <notifications/notifications.h>
 #include <utils/logger.h>
 #include "config.h"
@@ -79,7 +76,6 @@ bool ranAlready2() {
 }
 
 INITIALIZE_PLUGIN() {
-    gClient = -1;
     WHBLogUdpInit();
     WHBLogCafeInit();
     Config::Init();
