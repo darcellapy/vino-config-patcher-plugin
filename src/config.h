@@ -1,5 +1,5 @@
-#ifndef VCP_CONFIG_H
-#define VCP_CONFIG_H
+#ifndef _CONFIG_H
+#define _CONFIG_H
 
 class Config {
 public:
