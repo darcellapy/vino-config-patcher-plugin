@@ -35,7 +35,7 @@ bool backUpExists() {
     if (FSAOpenDir(gClient, VINO_CONFIG_BACKUP_PATH, &handle) != FS_ERROR_OK) {
         return false;
     }
-    FSACloseFile(gClient, handle);
+    FSACloseDir(gClient, handle);
     return true;
 }
 
@@ -44,7 +44,7 @@ bool patchExists() {
     if (FSAOpenDir(gClient, VINO_CONFIG_PATCH_PATH, &handle) != FS_ERROR_OK) {
         return false;
     }
-    FSACloseFile(gClient, handle);
+    FSACloseDir(gClient, handle);
     return true;
 }
 
