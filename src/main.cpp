@@ -60,16 +60,6 @@ bool ranAlready() {
     } else {
         return false;
     }
-    return NULL;
-}
-
-bool ranAlready2() {
-    if (patchExists() == true) {
-        return true;
-    } else {
-        return false;
-    }
-    return NULL;
 }
 
 INITIALIZE_PLUGIN() {
@@ -124,7 +114,7 @@ INITIALIZE_PLUGIN() {
         } else {
             return;
         }
-        if (ranAlready2() == false) {
+        if (ranAlready() == false) {
             FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_PATCH_PATH);
             DEBUG_FUNCTION_LINE("vino_config.txt has been successfully restored to original!");
         } else {
