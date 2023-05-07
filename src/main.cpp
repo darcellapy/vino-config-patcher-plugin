@@ -2,19 +2,16 @@
 // Note: used some of Inkay, the Pretendo Network plugin source code as a base and to make use of the notfications. Credit to Pretendo for developing Inkay
 
 #include <wups.h>
-#include <stdio.h>
-#include <string>
-#include <filesystem>
 #include <optional>
-#include <coreinit/filesystem_fsa.h>
-#include <coreinit/cache.h>
-#include <coreinit/ios.h>
-#include <coreinit/mcp.h>
-#include <mocha/mocha.h>
-#include <notifications/notifications.h>
 #include <utils/logger.h>
 #include "config.h"
+#include <notifications/notifications.h>
 #include "Notification.h"
+#include <stdio.h>
+#include <string>
+#include <coreinit/filesystem_fsa.h>
+#include <coreinit/ios.h>
+#include <mocha/mocha.h>
 
 WUPS_PLUGIN_NAME("Vino Config Patcher");
 WUPS_PLUGIN_DESCRIPTION("LatteU TVii patcher");
@@ -80,7 +77,7 @@ INITIALIZE_PLUGIN() {
     WHBLogCafeInit();
     Config::Init();
     if (Mocha_InitLibrary() != MOCHA_RESULT_SUCCESS) {
-        DEBUG_FUNCTION_LINE("Mocha_InitLibrary failed");
+        DEBUG_FUNCTION_LINE("Fatal error, Mocha_InitLibrary failed :(");
         return;
     }
     FSAInit();
@@ -128,7 +125,7 @@ INITIALIZE_PLUGIN() {
             DEBUG_FUNCTION_LINE("Backed up vino_config.txt!");
             StartNotificationThread("Backed up vino_config.txt!");
         } else {
-            return;
+            return true;
         }
         if (ranAlready2() == false) {
             FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_PATCH_PATH);
@@ -142,8 +139,8 @@ INITIALIZE_PLUGIN() {
 
 DEINITIALIZE_PLUGIN() {
     WHBLogUdpDeinit();
-    NotificationModule_DeInitLibrary();
     Mocha_DeInitLibrary();
+    NotificationModule_DeInitLibrary();
 }
 
 ON_APPLICATION_START() {
