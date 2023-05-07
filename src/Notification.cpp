@@ -1,5 +1,4 @@
-// Taken from the Inkay plugin by Pretendo Network and modified. Original code credit goes to Pretendo.
-// Modified by Nova (Glitchii)
+// Taken from the Inkay plugin by Pretendo Network. Original code credit goes to Pretendo.
 
 #include "Notification.h"
 #include <coreinit/cache.h>
