@@ -77,21 +77,19 @@ INITIALIZE_PLUGIN() {
     WHBLogCafeInit();
     Config::Init();
     if (Mocha_InitLibrary() != MOCHA_RESULT_SUCCESS) {
-        OSFATAL_FUNCTION_LINE("Fatal error, Mocha_InitLibrary failed :(");
+        DEBUG_FUNCTION_LINE("Fatal error, Mocha_InitLibrary failed :(");
     }
     FSAInit();
     gClient = FSAAddClient(NULL);
     if (gClient == 0) {
-        OSFATAL_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
-        return;
+        DEBUG_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
     }
     if (Mocha_UnlockFSClientEx(gClient) != MOCHA_RESULT_SUCCESS) {
         FSADelClient(gClient);
-        OSFATAL_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
-        return;
+        DEBUG_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
     }
     if (NotificationModule_InitLibrary() != NOTIFICATION_MODULE_RESULT_SUCCESS) {
-        OSFATAL_FUNCTION_LINE("NotificationModule_InitLibrary failed :(");
+        DEBUG_FUNCTION_LINE("NotificationModule_InitLibrary failed :(");
     }
     if (Config::connect_to_latte) {	
 	// check if original Vino config was backed up
@@ -150,7 +148,6 @@ ON_APPLICATION_START() {
         DEBUG_FUNCTION_LINE("VCI: Vino patch skipped.");
         return;
     }
-    return;
 }
 
 ON_APPLICATION_ENDS() {
