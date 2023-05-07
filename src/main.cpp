@@ -79,10 +79,14 @@ bool ranAlready2() {
 }
 
 INITIALIZE_PLUGIN() {
+    gClient = -1;
     WHBLogUdpInit();
     WHBLogCafeInit();
     Config::Init();
-    Mocha_InitLibrary();
+    if (Mocha_InitLibrary() != MOCHA_RESULT_SUCCESS) {
+        DEBUG_FUNCTION_LINE("Mocha_InitLibrary failed");
+        return;
+    }
     FSAInit();
     gClient = FSAAddClient(NULL);
     if (gClient == 0) {
@@ -94,11 +98,9 @@ INITIALIZE_PLUGIN() {
         DEBUG_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
         return;
     }
-
     if (NotificationModule_InitLibrary() != NOTIFICATION_MODULE_RESULT_SUCCESS) {
         DEBUG_FUNCTION_LINE("NotificationModule_InitLibrary failed");
     }
-    
     if (Config::connect_to_latte) {	
 	// check if original Vino config was backed up
 	if (isBackedUp() == false) {
