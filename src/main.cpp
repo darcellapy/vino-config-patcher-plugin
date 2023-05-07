@@ -87,12 +87,12 @@ INITIALIZE_PLUGIN() {
     gClient = FSAAddClient(NULL);
     if (gClient == 0) {
         DEBUG_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
-        return 0;
+        return;
     }
     if (Mocha_UnlockFSClientEx(gClient) != MOCHA_RESULT_SUCCESS) {
         FSADelClient(gClient);
         DEBUG_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
-        return 0;
+        return;
     }
 
     if (NotificationModule_InitLibrary() != NOTIFICATION_MODULE_RESULT_SUCCESS) {
