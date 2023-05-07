@@ -84,39 +84,50 @@ INITIALIZE_PLUGIN() {
     if (Config::connect_to_latte) {	
 	// check if original Vino config was backed up
 	if (isBackedUp() == false) {
-            DEBUG_FUNCTION_LINE("vino_config.txt not backed up... Backing up vino_config.txt...");
-            StartNotificationThread("vino_config.txt not backed up... Backing up vino_config.txt...");
-            
-            FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_BACKUP_PATH);
-	    
-            DEBUG_FUNCTION_LINE("Backed up vino_config.txt!");
-            StartNotificationThread("Backed up vino_config.txt!");
+            try {
+                DEBUG_FUNCTION_LINE("vino_config.txt not backed up... Backing up vino_config.txt...");
+                StartNotificationThread("vino_config.txt not backed up... Backing up vino_config.txt...");
+                FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_BACKUP_PATH);
+                DEBUG_FUNCTION_LINE("Backed up vino_config.txt!");
+                StartNotificationThread("Backed up vino_config.txt!");
+            } catch (...) {
+                DEBUG_FUNCTION_LINE("VCP: something went weird with the vino_config.txt being backed up\nif nothing appears to have gone wrong you may ignore this warning.")
+            }
         } else {
             return;
         }
         if (ranAlready() == true) {
-            FSARename(gClient, VINO_CONFIG_PATCH_PATH, VINO_CONFIG_PATH);
-
-            DEBUG_FUNCTION_LINE("vino_config.txt has been successfully patched to use LatteU!");
-            StartNotificationThread("vino_config.txt has been successfully patched to use LatteU!");
+            try {
+                FSARename(gClient, VINO_CONFIG_PATCH_PATH, VINO_CONFIG_PATH);
+                DEBUG_FUNCTION_LINE("vino_config.txt has been successfully patched to use LatteU!");
+                StartNotificationThread("vino_config.txt has been successfully patched to use LatteU!");
+            } catch (...) {
+                DEBUG_FUNCTION_LINE("VCP: something went weird with the vino_config.txt being patched\nif nothing appears to have gone wrong you may ignore this warning.")
+            }
         } else {
             return;
         }
     } else {
         if (isBackedUp() == false) {
             DEBUG_FUNCTION_LINE("vino_config.txt not backed up... Backing up vino_config.txt...");
-            StartNotificationThread("vino_config.txt not backed up... Backing up vino_config.txt...");
-            
-            FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_BACKUP_PATH);
-	    
-            DEBUG_FUNCTION_LINE("Backed up vino_config.txt!");
-            StartNotificationThread("Backed up vino_config.txt!");
+            StartNotificationThread("vino_config.txt not backed up... Backing up vino_config.txt...");    
+            try {
+                FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_BACKUP_PATH);
+                DEBUG_FUNCTION_LINE("Backed up vino_config.txt!");
+                StartNotificationThread("Backed up vino_config.txt!");
+	    } catch (...) {
+                DEBUG_FUNCTION_LINE("VCP: something went weird with the vino_config.txt being backed up\nif nothing appears to have gone wrong you may ignore this warning.")
+            }
         } else {
             return;
         }
         if (ranAlready() == false) {
-            FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_PATCH_PATH);
-            DEBUG_FUNCTION_LINE("vino_config.txt has been successfully restored to original!");
+            try {
+                FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_PATCH_PATH);
+                DEBUG_FUNCTION_LINE("vino_config.txt has been successfully restored to original!");
+            } catch (...) {
+                DEBUG_FUNCTION_LINE("VCP: something went weird with the vino_config.txt being restored\nif nothing appears to have gone wrong you may ignore this warning.")
+            }
         } else {
             return;
         }
@@ -133,21 +144,24 @@ DEINITIALIZE_PLUGIN() {
 ON_APPLICATION_START() {
     WHBLogUdpInit();
     WHBLogCafeInit();
-    DEBUG_FUNCTION_LINE("VCI: hihi\n");
+    DEBUG_FUNCTION_LINE("VCP: hihi\n");
     if (!Config::connect_to_latte) {
-        DEBUG_FUNCTION_LINE("VCI: Vino patch skipped.");
+        DEBUG_FUNCTION_LINE("VCP: Vino patch skipped.");
         return;
     }
 }
 
 ON_APPLICATION_ENDS() {
-    FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_PATCH_PATH);
-    FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_BACKUP_PATH);
-    DEBUG_FUNCTION_LINE("Restored original vino_config.txt!");
-    DEBUG_FUNCTION_LINE("VCI: shutting down...\n");
+    try {
+        FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_PATCH_PATH);
+        FSARename(gClient, VINO_CONFIG_PATH, VINO_CONFIG_BACKUP_PATH);
+        DEBUG_FUNCTION_LINE("Restored original vino_config.txt!");
+    } catch (...) {
+        DEBUG_FUNCTION_LINE("VCP: uh oh, something went weird with the restoration of the original vino_config.txt :/\n")
+    }
+    DEBUG_FUNCTION_LINE("VCP: shutting down...\n");
     StopNotificationThread();
     DEBUG_FUNCTION_LINE("Unmount storage_mlc");
     FSAFlushVolume(gClient, "/vol/storage_mlc01");
     FSADelClient(gClient);
-    DEBUG_FUNCTION_LINE("VCI: goodbye!");
 }

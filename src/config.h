@@ -12,4 +12,4 @@ public:
     static bool need_relaunch;
 };
 
-#endif //VCP_CONFIG_H
+#endif
