@@ -1,181 +1,119 @@
 // Nova is real I think
 // Note: used some of Inkay, the Pretendo Network plugin source code as a base and to make use of the notfications. Credit to Pretendo for developing Inkay
+#include <coreinit/filesystem.h>
+#include <coreinit/debug.h>
+#include <sysapp/switch.h>
+#include <vpad/input.h>
 
 #include <wups.h>
-#include <optional>
-#include <utils/logger.h>
-#include "config.h"
 #include <notifications/notifications.h>
+
+#include "utils/logger.h"
+#include "config.h"
 #include "Notification.h"
-#include <stdio.h>
-#include <string>
-#include <coreinit/filesystem_fsa.h>
-#include <coreinit/ios.h>
-#include <mocha/mocha.h>
 
 WUPS_PLUGIN_NAME("Vino Config Patcher");
 WUPS_PLUGIN_DESCRIPTION("LatteU TVii patcher");
 WUPS_PLUGIN_VERSION("v1.0");
-WUPS_PLUGIN_AUTHOR("Glitchii");
-WUPS_PLUGIN_LICENSE("GPL");
+WUPS_PLUGIN_AUTHOR("Glitchii and Fangal");
+WUPS_PLUGIN_LICENSE("GPLv2");
 
 WUPS_USE_STORAGE("vcp");
+WUPS_USE_WUT_DEVOPTAB();
 
-#define VINO_CONFIG_PATH "/vol/storage_mlc01/sys/title/00050030/1001310a/content/vino_config.txt"
-#define VINO_CONFIG_BACKUP_PATH "/vol/storage_mlc01/sys/title/00050030/1001310a/content/vino_config_original.txt"
-#define VINO_CONFIG_PATCH_PATH "/vol/storage_mlc01/sys/title/00050030/1001310a/content/vino_config_patch.txt"
-#define VINO_CONFIG_PATCH_SD_PATH "/vol/external01/vino_config_patch.txt"
+#define VINO_CONFIG_PATH "/vol/content/vino_config.txt"
+#define VINO_CONFIG_SD_PATH "/vol/external01/LatteU/vino_config.txt"
 
-int gClient = -1;
-
-bool backUpExists() {
-    FSAFileHandle handle = -1;
-    if (FSAOpenDir(gClient, VINO_CONFIG_BACKUP_PATH, &handle) != FS_ERROR_OK) {
-        return false;
-    }
-    FSACloseFile(gClient, handle);
-    return true;
-}
-
-bool patchExists() {
-    FSAFileHandle handle = -1;
-    if (FSAOpenDir(gClient, VINO_CONFIG_PATCH_PATH, &handle) != FS_ERROR_OK) {
-        return false;
-    }
-    FSACloseFile(gClient, handle);
-    return true;
-}
-
-bool isBackedUp() {
-    if (backUpExists() == true) {
-        return true;
-    } else {
-        return false;
-    }
-    return NULL;
-}
-
-bool ranAlready() {
-    if (patchExists() == true) {
-        return true;
-    } else {
-        return false;
-    }
-}
+FSMountSource mSource;
+char mPath[128]= "";
 
 INITIALIZE_PLUGIN() {
     WHBLogUdpInit();
     WHBLogCafeInit();
     Config::Init();
-    if (Mocha_InitLibrary() != MOCHA_RESULT_SUCCESS) {
-        DEBUG_FUNCTION_LINE("Fatal error, Mocha_InitLibrary failed :(");
-    }
-    FSAInit();
-    gClient = FSAAddClient(NULL);
-    if (gClient == 0) {
-        DEBUG_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
-    }
-    if (Mocha_UnlockFSClientEx(gClient) != MOCHA_RESULT_SUCCESS) {
-        FSADelClient(gClient);
-        DEBUG_FUNCTION_LINE("Fatal error, failed to add FSAClient :(");
-    }
+    
     if (NotificationModule_InitLibrary() != NOTIFICATION_MODULE_RESULT_SUCCESS) {
         DEBUG_FUNCTION_LINE("NotificationModule_InitLibrary failed :(");
-    } 
+    }
 
-    if (Config::connect_to_latte) {	
-	// check if original Vino config was backed up
-	if (isBackedUp() == false) {
-            try {
-                DEBUG_FUNCTION_LINE("vino_config.txt not backed up... Backing up vino_config.txt...");
-                StartNotificationThread("vino_config.txt not backed up... Backing up vino_config.txt...");
-                FSARename(gClient, VINO_CONFIG_PATH, "vino_config_backup.txt");
-                DEBUG_FUNCTION_LINE("Backed up vino_config.txt!");
-                StartNotificationThread("Backed up vino_config.txt!");
-            } catch (...) {
-                DEBUG_FUNCTION_LINE("VCP: something went weird with the vino_config.txt being backed up\nif nothing appears to have gone wrong you may ignore this warning.")
-            }
-        } else {
-            return;
-        }
-        if (ranAlready() == true) {
-            try {
-                FSARename(gClient, VINO_CONFIG_PATCH_PATH, "vino_config.txt");
-                DEBUG_FUNCTION_LINE("vino_config.txt has been successfully patched to use LatteU!");
-                StartNotificationThread("vino_config.txt has been successfully patched to use LatteU!");
-            } catch (...) {
-                DEBUG_FUNCTION_LINE("VCP: something went weird with the vino_config.txt being patched\nif nothing appears to have gone wrong you may ignore this warning.")
-            }
-        } else {
-            try {
-                FSARename(gClient, VINO_CONFIG_PATCH_SD_PATH, VINO_CONFIG_PATH);
-                DEBUG_FUNCTION_LINE("vino_config.txt has been successfully patched to use LatteU!");
-                StartNotificationThread("vino_config.txt has been successfully patched to use LatteU!");
-            } catch (...) {
-                DEBUG_FUNCTION_LINE("VCP: something went weird with the vino_config.txt being patched\nif nothing appears to have gone wrong you may ignore this warning.")
-            }
-        }
-    } else {
-        if (isBackedUp() == false) {
-            DEBUG_FUNCTION_LINE("vino_config.txt not backed up... Backing up vino_config.txt...");
-            StartNotificationThread("vino_config.txt not backed up... Backing up vino_config.txt...");    
-            try {
-                FSARename(gClient, VINO_CONFIG_PATH, "vino_config_backup.txt");
-                DEBUG_FUNCTION_LINE("Backed up vino_config.txt!");
-                StartNotificationThread("Backed up vino_config.txt!");
-	    } catch (...) {
-                DEBUG_FUNCTION_LINE("VCP: something went weird with the vino_config.txt being backed up\nif nothing appears to have gone wrong you may ignore this warning.")
-            }
-        } else {
-            return;
-        }
-        if (ranAlready() == false) {
-            try {
-                FSARename(gClient, VINO_CONFIG_PATCH_PATH, "vino_config_patch.txt");
-                DEBUG_FUNCTION_LINE("vino_config.txt has been successfully restored to original!");
-            } catch (...) {
-                DEBUG_FUNCTION_LINE("VCP: something went weird with the vino_config.txt being restored\nif nothing appears to have gone wrong you may ignore this warning.")
-            }
-        } else {
-            try {
-                FSARename(gClient, VINO_CONFIG_PATCH_SD_PATH, VINO_CONFIG_PATCH_PATH);
-                DEBUG_FUNCTION_LINE("vino_config.txt has been successfully restored to original!");
-                StartNotificationThread("vino_config.txt has been successfully restored to original!");
-            } catch (...) {
-                DEBUG_FUNCTION_LINE("VCP: something went weird with the vino_config.txt being restored\nif nothing appears to have gone wrong you may ignore this warning.")
-            }
-        }
-        StartNotificationThread("Note: LatteU vino_config.txt patch is disabled!");
+    if (Config::connect_to_latte) {
+        StartNotificationThread("LatteU: TVii patch enabled");
+    }
+    else {
+        StartNotificationThread("LatteU: TVii patch disabled");
     }
 }
 
 DEINITIALIZE_PLUGIN() {
     WHBLogUdpDeinit();
-    Mocha_DeInitLibrary();
     NotificationModule_DeInitLibrary();
 }
 
 ON_APPLICATION_START() {
     WHBLogUdpInit();
     WHBLogCafeInit();
-    DEBUG_FUNCTION_LINE("VCP: hihi\n");
-    if (!Config::connect_to_latte) {
-        DEBUG_FUNCTION_LINE("VCP: Vino patch skipped.");
-        return;
-    }
+    
+    DEBUG_FUNCTION_LINE("VCP: hihi");
 }
 
-ON_APPLICATION_ENDS() {
-    try {
-        FSARename(gClient, VINO_CONFIG_PATH, "vino_config_patch.txt");
-        FSARename(gClient, VINO_CONFIG_BACKUP_PATH, "vino_config_backup.txt");
-        DEBUG_FUNCTION_LINE("Restored original vino_config.txt!");
-    } catch (...) {
-        DEBUG_FUNCTION_LINE("VCP: uh oh, something went weird with the restoration of the original vino_config.txt :/\n")
+DECL_FUNCTION(int32_t, _SYSSwitchTo, SysAppPFID pfid) {
+    SysAppPFID uPfid = pfid;
+    
+    VPADStatus status;
+    VPADReadError err;
+
+    VPADRead(VPAD_CHAN_0, &status, 1, &err);
+    
+    if (pfid == SYSAPP_PFID_DOWNLOAD_MANAGEMENT) {
+        if (Config::replace_download_management) {
+            if (!(status.hold & VPAD_BUTTON_ZL)) {
+                uPfid = SYSAPP_PFID_TVII;
+            }
+        }
     }
-    DEBUG_FUNCTION_LINE("VCP: shutting down...\n");
-    StopNotificationThread();
-    DEBUG_FUNCTION_LINE("Unmount storage_mlc");
-    FSAFlushVolume(gClient, "/vol/storage_mlc01");
-    FSADelClient(gClient);
+
+    return real__SYSSwitchTo(uPfid);
 }
+
+DECL_FUNCTION(int32_t, _SYSSwitchToOverlayFromHBM, SysAppPFID pfid) {
+    SysAppPFID uPfid = pfid;
+    
+    VPADStatus status;
+    VPADReadError err;
+
+    VPADRead(VPAD_CHAN_0, &status, 1, &err);
+    
+    if (pfid == SYSAPP_PFID_DOWNLOAD_MANAGEMENT) {
+        if (Config::replace_download_management) {
+            if (!(status.hold & VPAD_BUTTON_ZL)) {
+                uPfid = SYSAPP_PFID_TVII;
+            }
+        }
+    }
+
+    return real__SYSSwitchToOverlayFromHBM(uPfid);
+}
+
+DECL_FUNCTION(FSStatus, FSOpenFile, FSClient *client, FSCmdBlock *block, const char *path, const char *mode, FSFileHandle *handle, FSErrorFlag errorMask) {
+    if (Config::connect_to_latte) {
+        if (strcmp(VINO_CONFIG_PATH, path) == 0) {
+            // Applets need to mount the SD card to access files on it :P
+            FSGetMountSource(client, block, FS_MOUNT_SOURCE_SD, &mSource, FS_ERROR_FLAG_ALL);
+            FSMount(client, block, &mSource, mPath, sizeof(mPath), FS_ERROR_FLAG_ALL);
+            FSStatus res = real_FSOpenFile(client, block, VINO_CONFIG_SD_PATH, mode, handle, errorMask);
+            if (res != FS_STATUS_OK) {
+                OSFatal("--------------- LatteU Error ---------------\n\n"\
+                        "Error loading vino_config.txt\n\nPlease check if this file is in the correct directory:\n"\
+                        "sd:/LatteU/vino_config.txt");
+            }
+
+            return res;
+        }
+    }
+
+    return real_FSOpenFile(client, block, path, mode, handle, errorMask);
+}
+
+WUPS_MUST_REPLACE(_SYSSwitchTo, WUPS_LOADER_LIBRARY_SYSAPP, _SYSSwitchTo);
+WUPS_MUST_REPLACE_PHYSICAL_FOR_PROCESS(_SYSSwitchToOverlayFromHBM, 0x2E47373C, 0x0E47373C, WUPS_FP_TARGET_PROCESS_HOME_MENU);
+WUPS_MUST_REPLACE_FOR_PROCESS(FSOpenFile, WUPS_LOADER_LIBRARY_COREINIT, FSOpenFile, WUPS_FP_TARGET_PROCESS_TVII);
