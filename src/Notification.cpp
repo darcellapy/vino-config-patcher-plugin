@@ -17,7 +17,7 @@ void ShowNotification(const char * notification) {
     while (!sShutdownHintThread && NotificationModule_IsOverlayReady(&isOverlayReady) == NOTIFICATION_MODULE_RESULT_SUCCESS && !isOverlayReady)
         OSSleepTicks(OSMillisecondsToTicks(16));
     if (sShutdownHintThread || !isOverlayReady) return;
-    NotificationModuleStatus err = NotificationModule_SetDefaultValue(NOTIFICATION_MODULE_NOTIFICATION_TYPE_INFO, NOTIFICATION_MODULE_DEFAULT_OPTION_DURATION_BEFORE_FADE_OUT, 15.0f);
+    NotificationModuleStatus err = NotificationModule_SetDefaultValue(NOTIFICATION_MODULE_NOTIFICATION_TYPE_INFO, NOTIFICATION_MODULE_DEFAULT_OPTION_DURATION_BEFORE_FADE_OUT, 8.0f);
     if(err != NOTIFICATION_MODULE_RESULT_SUCCESS) return;
 
     NotificationModule_AddInfoNotification(notification);

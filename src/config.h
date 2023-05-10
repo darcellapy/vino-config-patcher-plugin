@@ -7,9 +7,7 @@ public:
 
     // wups config items
     static bool connect_to_latte;
-
-    // private stuff
-    static bool need_relaunch;
+    static bool replace_download_management;
 };
 
 #endif
