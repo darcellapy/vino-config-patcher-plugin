@@ -1,0 +1,126 @@
+#ur0 is default
+url0:https://yoursitehere
+# ^ replace yoursitehere with your website
+
+# on/off debug print of client
+CallbackDebugPrint:0
+
+# add timestamp to debug print
+AddTimeStampToDebugPrint:0
+
+# 0/1 download whitelist with/without Verifying service-token
+# 0 download the white-list without service-token on http-request-header
+# 1 download the white-list with service-token on http-request-header
+WhiteList_VerifyServiceToken:0
+
+# 0/1 use whitelist cache on NAND
+WhiteList_UseCache:0
+
+# on/off javascript error print on console
+# 0:off, 1:on
+JavaScriptErrorPrintOnConsole:0
+
+# on/off javascript error print on dialog
+# 0:off, 1:on
+JavaScriptErrorPrintOnDialog:0
+
+# on/off console.log()[javascript] print on console
+# 0:off, 1:on
+ConsoleLogPrint:0
+
+# 0/1/2  TV rendering style
+# 0:Development (display DRC-screen with some debug information)
+# 1:Demo        (display only DRC-screen at center)
+# 2:Final       (display nothing)
+TVStyle:2
+
+#LoadUrl
+# 0: Load from WhiteList (If not exist, load from url0.)
+# 1: Load from url0
+LoadUrl:1
+
+# 0/1 FriendList Contains Temporary Friend and Requested Friend or not.
+# 0:Not Contain
+# 1:Contain
+ContainTemporaryFriend:0
+
+# 0/1 Reset Navi Forcus on Drag Event
+# 0:Disable (don't reset on drag event)
+# 1:Enable  (reset on drag event)
+NaviResetOnDrag:0
+
+# Enable Accelearted Compositing
+# 0 : Disable
+# 1 : Enable
+EnableAc:1
+
+# Enable Event Lock at Page Loading
+# 0 : Disable
+# 1 : Enable
+EnableEventLock:1
+
+# User Agent Setting
+# UserAgent_String: Mozilla/5.0 (Nintendo WiiU) AppleWebKit/534.52 (KHTML, like Gecko) NX/2.2.0.8.21 vn/1.1.JP
+# 0/1/2/3 WhiteList Setting.
+# 0:None    (vino does not use white-list)
+# 1:File    (vino uses white-list on file, path is written at 'WhiteList_Path')
+# 2:Network (vino uses white-list on network, path is written at 'WhiteList_Path'. in this mode, white-list is downloaded with a paticular ssl certification for client and server.)
+# 3:Release (vino uses the final environment by each region.)
+WhiteList_Use:0
+# WhiteList_Path:https://yoursitehere/whitelist.txt?country=us
+
+# Allow 'file:' and 'http:' scheme. Finally, it is set to 'Not Allow'
+# 0:Not Allow
+# 1:Allow
+AllowDebugScheme:1
+
+# LoadingIcon
+# 0:Not Draw Icon at Pre-loading
+# 1:Draw
+PreLoadIconDraw:0
+
+# LayoutColor RGB (0-255)
+
+P_TouchEffectSBColorR:115
+P_TouchEffectSBColorG:238
+P_TouchEffectSBColorB:255
+P_TouchEffectSWColorR:0
+P_TouchEffectSWColorG:238
+P_TouchEffectSWColorB:255
+
+P_TouchEffectMBColorR:107
+P_TouchEffectMBColorG:114
+P_TouchEffectMBColorB:255
+P_TouchEffectMWColorR:0
+P_TouchEffectMWColorG:199
+P_TouchEffectMWColorB:255
+
+W_NodeFrameBColorR:72
+W_NodeFrameBColorG:197
+W_NodeFrameBColorB:255
+W_NodeFrameWColorR:128
+W_NodeFrameWColorG:219
+W_NodeFrameWColorB:255
+W_NodeFrameVTColorR:217
+W_NodeFrameVTColorG:255
+W_NodeFrameVTColorB:249
+W_NodeFrameVBColorR:153
+W_NodeFrameVBColorG:249
+W_NodeFrameVBColorB:255
+
+W_BaseBColorR:72
+W_BaseBColorG:197
+W_BaseBColorB:255
+W_BaseWColorR:128
+W_BaseWColorG:219
+W_BaseWColorB:255
+W_BaseVTColorR:217
+W_BaseVTColorG:255
+W_BaseVTColorB:249
+W_BaseVBColorR:153
+W_BaseVBColorG:249
+W_BaseVBColorB:255
+
+W_DecideWColorR:128
+W_DecideWColorG:220
+W_DecideWColorB:255
