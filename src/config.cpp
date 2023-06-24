@@ -73,7 +73,7 @@ WUPS_GET_CONFIG() {
     WUPSConfigCategoryHandle cat;
     WUPSConfig_AddCategoryByNameHandled(config, "Patching", &cat);
 
-    WUPSConfigItemBoolean_AddToCategoryHandled(config, cat, "Vino Config Patch", "Patch your vino config to use LatteU", Config::connect_to_latte, &connect_to_latte_changed);
+    WUPSConfigItemBoolean_AddToCategoryHandled(config, cat, "Vino Config Patch", "Patch your vino config to use a custom one", Config::connect_to_latte, &connect_to_latte_changed);
     WUPSConfigItemBoolean_AddToCategoryHandled(config, cat, "Replace Donwload Management", "Replace Download Management with TVii", Config::replace_download_management, &replace_download_management_changed);
     WUPSConfigItemStub_AddToCategoryHandled(config, cat, "Replace Info", "If enabled, to open Download Management hold \ue085 when loading.");
 
