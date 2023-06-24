@@ -5,3 +5,6 @@ The file `vino_config.txt` should be placed in the directory: `sd:/TVii/vino_con
 
 # Where do I get a vino_config.txt?
 You can use the example one provided in the source, rename it to `vino_config.txt` of course, put it in the `TVii` folder at the root of your SD card, and then edit it to change settings and the urls TVii redirects to.
+
+# Note
+Not every website will work with TVii. Some websites may even have certificates that the Wii U will not like and prevent loading them.
