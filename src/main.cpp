@@ -13,7 +13,7 @@
 #include "Notification.h"
 
 WUPS_PLUGIN_NAME("Vino Config Patcher");
-WUPS_PLUGIN_DESCRIPTION("LatteU TVii patcher");
+WUPS_PLUGIN_DESCRIPTION("TVii config patcher");
 WUPS_PLUGIN_VERSION("v1.1");
 WUPS_PLUGIN_AUTHOR("Glitchii and Fangal");
 WUPS_PLUGIN_LICENSE("GPLv2");
