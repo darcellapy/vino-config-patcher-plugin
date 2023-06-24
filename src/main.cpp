@@ -14,7 +14,7 @@
 
 WUPS_PLUGIN_NAME("Vino Config Patcher");
 WUPS_PLUGIN_DESCRIPTION("LatteU TVii patcher");
-WUPS_PLUGIN_VERSION("v1.0");
+WUPS_PLUGIN_VERSION("v1.1");
 WUPS_PLUGIN_AUTHOR("Glitchii and Fangal");
 WUPS_PLUGIN_LICENSE("GPLv2");
 
@@ -22,7 +22,7 @@ WUPS_USE_STORAGE("vcp");
 WUPS_USE_WUT_DEVOPTAB();
 
 #define VINO_CONFIG_PATH "/vol/content/vino_config.txt"
-#define VINO_CONFIG_SD_PATH "/vol/external01/LatteU/vino_config.txt"
+#define VINO_CONFIG_SD_PATH "/vol/external01/TVii/vino_config.txt"
 
 FSMountSource mSource;
 char mPath[128]= "";
@@ -37,10 +37,10 @@ INITIALIZE_PLUGIN() {
     }
 
     if (Config::connect_to_latte) {
-        StartNotificationThread("LatteU: TVii patch enabled");
+        StartNotificationThread("TVii patch enabled");
     }
     else {
-        StartNotificationThread("LatteU: TVii patch disabled");
+        StartNotificationThread("TVii patch disabled");
     }
 }
 
@@ -102,9 +102,9 @@ DECL_FUNCTION(FSStatus, FSOpenFile, FSClient *client, FSCmdBlock *block, const c
             FSMount(client, block, &mSource, mPath, sizeof(mPath), FS_ERROR_FLAG_ALL);
             FSStatus res = real_FSOpenFile(client, block, VINO_CONFIG_SD_PATH, mode, handle, errorMask);
             if (res != FS_STATUS_OK) {
-                OSFatal("--------------- LatteU Error ---------------\n\n"\
+                OSFatal("--------------- Error ---------------\n\n"\
                         "Error loading vino_config.txt\n\nPlease check if this file is in the correct directory:\n"\
-                        "sd:/LatteU/vino_config.txt");
+                        "sd:/TVii/vino_config.txt");
             }
 
             return res;
