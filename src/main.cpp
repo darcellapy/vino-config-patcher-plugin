@@ -1,5 +1,5 @@
-// Nova is real I think
-// Note: used some of Inkay, the Pretendo Network plugin source code as a base and to make use of the notfications. Credit to Pretendo for developing Inkay
+// novaur is real
+// note: used some of Inkay, the Pretendo Network plugin source code as a base and to make use of the notfications. Credit to Pretendo for developing Inkay
 #include <coreinit/filesystem.h>
 #include <coreinit/debug.h>
 #include <sysapp/switch.h>
@@ -15,7 +15,7 @@
 WUPS_PLUGIN_NAME("Vino Config Patcher");
 WUPS_PLUGIN_DESCRIPTION("TVii config patcher");
 WUPS_PLUGIN_VERSION("v1.1");
-WUPS_PLUGIN_AUTHOR("Glitchii and Fangal");
+WUPS_PLUGIN_AUTHOR("Novaur and Fangal");
 WUPS_PLUGIN_LICENSE("GPLv2");
 
 WUPS_USE_STORAGE("vcp");
